@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -32,4 +32,29 @@ dataSources:
           handler: handleRepay
         - event: SwapBorrowRateMode(indexed address,indexed address,uint8)
           handler: handleSwapBorrowRateMode
+      file: ./src/mapping.ts
+  - kind: ethereum
+    name: LiquidationLogic
+    network: rinkeby
+    source:
+      address: "0x2bd8bfcfa19D4c9982d86d7CEf71e3A2e1bcf2cD"
+      abi: LiquidationLogic
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - LiquidationCall
+        - ReserveUsedAsCollateralEnabled
+        - ReserveUsedAsCollateralDisabled
+      abis:
+        - name: LiquidationLogic
+          file: ./abis/LiquidationLogic.json
+      eventHandlers:
+        - event: LiquidationCall(indexed address,indexed address,indexed address,uint256,uint256,address,bool)
+          handler: handleLiquidation
+        - event: ReserveUsedAsCollateralEnabled(indexed address,indexed address)
+          handler: handleReserveUsedAsCollateralEnabled
+        - event: ReserveUsedAsCollateralDisabled(indexed address,indexed address)
+          handler: handleReserveUsedAsCollateralDisabled
       file: ./src/mapping.ts

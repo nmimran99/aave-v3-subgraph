@@ -1,6 +1,83 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  reserve: Bytes! # address
-  user: Bytes! # address
+type BorrowEvent @entity {
+	id: ID!
+	reserve: Bytes!
+	borrower: Bytes!
+	onBehalfOf: Bytes!
+	amount: BigDecimal
+	interestRateMode: Int
+	borrowRate: BigInt
+	blockNumber: Int!
+	blockTime: Int!
+}
+
+type RepayEvent @entity {
+	id: ID!
+	amount: BigDecimal
+	reserve: Bytes!
+	borrower: Bytes!
+	repayer: Bytes!
+	blockNumber: Int!
+	blockTime: Int!
+	useATokens: Boolean
+}
+
+type LiquidationEvent @entity {
+	id: ID!
+	collateralAsset: Bytes!
+	debtAsset: Bytes!
+	account: Bytes!
+	debtToCover: BigDecimal!
+	liquidatedCollateralAmount: BigDecimal!
+	liquidator: Bytes!
+	receiveAToken: Boolean
+	blockTime: Int!
+	blockNumber: Int!
+	reserve: Bytes!
+}
+
+type Account @entity {
+	id: ID!
+	hasBorrowed: Boolean
+}
+
+type AccountAToken @entity {
+	id: ID!
+	reserve: Reserve!
+	account: Account!
+	accrualBlockNumber: BigInt!
+	enteredReserve: Boolean!
+	aTokenBalance: BigDecimal!
+	totalUnderlyingSupplied: BigDecimal!
+	totalUnderlyingRedeemed: BigDecimal!
+	accountBorrowIndex: BigDecimal!
+	totalUnderlyingBorrowed: BigDecimal!
+	totalUnderlyingRepaid: BigDecimal!
+	storedBorrowBalance: BigDecimal!
+	transactions: [AccountATokenTransaction!]! @derivedFrom(field: "account")
+}
+
+type AccountATokenTransaction @entity {
+	id: ID!
+	account: AccountAToken!
+	tx_hash: Bytes!
+	timestamp: BigInt!
+	block: BigInt!
+	logIndex: BigInt!
+}
+
+type Reserve @entity {
+	id: ID!
+	aTokenAddress: Bytes!
+	stableDebtTokenAddress: Bytes!
+	variableDebtTokenAddress: Bytes!
+	interestRateStrategyAddress: Bytes!
+	accruedToTreasury: BigInt
+	liquidityIndex: BigInt
+	currentLiquidityRate: BigInt
+	variableBorrowIndex: BigInt
+	currentVariableBorrowRate: BigInt
+	currentStableBorrowRate: BigInt
+	lastUpdateTimestamp: Int
+	unbacked: BigInt
+	isolationModeTotalDebt: BigInt
 }
