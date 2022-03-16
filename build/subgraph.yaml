@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: BorrowLogic
@@ -20,9 +20,10 @@ dataSources:
         - SwapBorrowRateMode
       abis:
         - name: BorrowLogic
-          file: ./abis/BorrowLogic.json
+          file: BorrowLogic\abis\BorrowLogic.json
       eventHandlers:
-        - event: Borrow(indexed address,address,indexed address,uint256,uint8,uint256,indexed uint16)
+        - event: Borrow(indexed address,address,indexed address,uint256,uint8,uint256,indexed
+            uint16)
           handler: handleBorrow
         - event: IsolationModeTotalDebtUpdated(indexed address,uint256)
           handler: handleIsolationModeTotalDebtUpdated
@@ -32,4 +33,4 @@ dataSources:
           handler: handleRepay
         - event: SwapBorrowRateMode(indexed address,indexed address,uint8)
           handler: handleSwapBorrowRateMode
-      file: ./src/mapping.ts
+      file: BorrowLogic\BorrowLogic.wasm

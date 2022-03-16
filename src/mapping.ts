@@ -24,7 +24,6 @@ export function handleBorrow(event: Borrow): void {
   account.hasBorrowed = true;
   account.save();
 
-  // What does underlyingBorrow means?
   let aTokenStats = updateCommonATokenStats(
     reserve.id,
     accountID,
@@ -34,9 +33,8 @@ export function handleBorrow(event: Borrow): void {
     event.logIndex
   )
   
-  // TO ADD - 
-  // totalUnderlyingBorrowed - add the amount to the totalUnderlyingBorrowed?
-  // accountBorrowIndex - ??
+  aTokenStats.totalUnderlyingBorrowed = aTokenStats.totalUnderlyingBorrowed
+    .plus(event.params.amount.toBigDecimal());
 
   aTokenStats.save()
 
@@ -71,9 +69,6 @@ export function handleRepay(event: Repay): void {
   if (account == null) {
     account = createAccount(accountID);
   }
-  
-  // Where can I get the current AToken balance?
-  // What does underlyingBorrow means?
 
   let aTokenStats = updateCommonATokenStats(
     reserve.id,
@@ -83,13 +78,9 @@ export function handleRepay(event: Repay): void {
     event.block.number,
     event.logIndex
   )
-  
-  // TO ADD - 
-  // totalUnderlyingRepaid  - add the amount to the totalUnderlyingBorrowed?
-  // accountBorrowIndex - ??
 
-  aTokenStats.aTokenBalance = aTokenStats.aTokenBalance
-    .minus(event.params.amount.toBigDecimal())
+  aTokenStats.totalUnderlyingRepaid = aTokenStats.totalUnderlyingRepaid
+    .plus(event.params.amount.toBigDecimal())
   
   aTokenStats.save()
   

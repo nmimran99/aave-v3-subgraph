@@ -1,5 +1,5 @@
 import { Bytes, BigInt, BigDecimal } from "@graphprotocol/graph-ts";
-import { Account, AccountAToken, AccountATokenTransaction } from "../generated/schema";
+import { Account, AccountAToken, AccountATokenTransaction, Reserve } from "../generated/schema";
 
 export let zeroBD = BigDecimal.fromString('0')
 
